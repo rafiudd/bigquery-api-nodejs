@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  postgres:
+    container_name: postgres
+    working_dir: /usr/app
+    volumes:
+      - /postgres/data:/var/lib/postgresql/data
+    image: 'postgres:9.6.10-alpine'
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB : sample_analytics
+      PG_VERSION: '9.6.10-alpine'
+    ports:
+      - "5432:5432"
+    networks:
+      - web
+  grafana:
+    image: grafana/grafana
+    user: "0"
+    depends_on:
+      - postgres
+    ports:
+      - 3000:3000
+    volumes:
+      - /grafana/data:/var/lib/grafana
+      - /grafana/provisioning/:/etc/grafana/provisioning/
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - web
+    restart: always
+networks:
+  web:
+    driver: bridge
