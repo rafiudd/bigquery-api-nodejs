@@ -11,7 +11,7 @@ const pool = new Pool({
 });
 
 async function getFromBigQuery(req,res) {
-    const query = `SELECT * FROM \`bigquery-public-data.google_analytics_sample.ga_sessions_20170801\`limit 10`;
+    const query = `SELECT * FROM \`bigquery-public-data.google_analytics_sample.ga_sessions_20170801\`limit 1000`;
     const options = {
         query: query,
         location: 'US',
