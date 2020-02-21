@@ -10,6 +10,18 @@ const pool = new Pool({
   port: "5432"
 });
 
+function eventDatetoTimestamp(a) {
+    b = '' + a
+    let yyyy = b.substring(0,4)
+    let mm = b.substring(4,6)
+    let dd = b.substring(6,8)
+  
+    let result = yyyy +"-" + mm+"-"+ dd + " 00:00:00"
+  
+    return result
+}
+  
+
 async function getFromBigQuery(req,res) {
     const query = `SELECT * FROM \`bigquery-public-data.google_analytics_sample.ga_sessions_20170801\`limit 1000`;
     const options = {
@@ -28,7 +40,7 @@ async function getFromBigQuery(req,res) {
         let data = rows[i];
         let model = {
             visitId: data.visitId,
-            date: data.date,
+            date: eventDatetoTimestamp(data.date),
             totals: data.totals,
             device: data.device,
             geoNetwork: data.geoNetwork
